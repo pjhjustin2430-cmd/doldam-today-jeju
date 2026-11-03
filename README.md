@@ -76,7 +76,10 @@ GitHub 연결 후 Import → Environment Variables 에 `.env.example` 의 값 �
 | 명소 상세: 무장애여행정보 실측 경로를 실제 지도 위에 | ![상세 지도](docs/captures/03_detail_map.jpg) |
 | 바람과 돌담: 기상청 풍속으로 움직이는 3D | ![3D](docs/captures/04_wind_3d.jpg) |
 | 내 수첩: Supabase 저장 → 새로고침 후에도 돌벽 유지 | ![돌벽 수첩](docs/captures/05_my_stonewall.jpg) |
+| 홈: 시간대별 걷기 좋은 때 · 체감온도·옷차림 · 일몰·자외선 · 비 오는 날 대안 코스 | ![걷기 좋은 때](docs/captures/14_walk_panel.jpg) |
+| 상세: 숙박 보강(제주 숙박 전체에서 거리로) | ![주변 숙박](docs/captures/15_lodging.jpg) |
+| 상세: 축제·행사 탭 | ![축제·행사](docs/captures/16_festival.jpg) |
 
 배포본 서버 함수 확인(2026-11-03): `/api/weather`, `/api/air`(에어코리아 실측), `/api/spots`, `/api/exhibitions`(돌문화공원), `/api/nearby`(TourAPI) 모두 200 응답. 돌담지기(`/api/agent`)는 Claude 키 교체 후 캡처를 추가합니다.
 
-발표 자료: `docs/돌담오늘_발표자료.pptx`(17장, 모든 기능 소개) · 대본 `docs/발표_대본.md` · 시연 영상 대본 `docs/시연_영상_대본.md`
+발표 자료: `docs/돌담오늘_발표자료.pptx`(19장, 모든 기능 소개) · 대본 `docs/발표_대본.md` · 시연 영상 대본 `docs/시연_영상_대본.md`
