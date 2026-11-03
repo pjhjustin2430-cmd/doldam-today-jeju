@@ -467,3 +467,33 @@ footer.olle-footer::before { content: ''; position: absolute; left: 0; right: 0;
 .wall-chip { display: inline-flex; align-items: center; gap: .4rem; border: 1px solid var(--line); background: #fff; border-radius: 99px; padding: .22rem .7rem .22rem .3rem; font-size: .82rem; color: var(--muted); text-decoration: none; }
 .wall-chip.on { color: var(--ink); background: var(--brand-soft); border-color: #cddab5; font-weight: 600; }
 .wall-chip:hover { border-color: var(--brand); color: var(--ink); }
+
+/* 걷기 좋은 때 (시간대별) · 체감온도·옷차림 · 일몰·자외선 · 비 오는 날 대안 코스 */
+:root { --lv-good: #7fb03b; --lv-ok: #f2b84b; --lv-bad: #e0644f; }
+.lv-good { color: var(--lv-good); } .lv-ok { color: #c98a14; } .lv-bad { color: var(--lv-bad); }
+.walk-panel { background: #fff; border: 1px solid var(--line); border-radius: 1.1rem; box-shadow: var(--shadow); padding: 1rem 1.1rem; }
+.walk-head { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; margin-bottom: .7rem; }
+.walk-tabs { display: inline-flex; background: var(--paper); border-radius: 99px; padding: 3px; }
+.walk-tabs button { border: 0; background: none; padding: .28rem .85rem; border-radius: 99px; font-size: .84rem; font-weight: 600; color: var(--muted); }
+.walk-tabs button.on { background: #fff; color: var(--ink); box-shadow: 0 1px 4px rgba(30, 34, 38, .15); }
+.walk-best { font-size: 1.05rem; margin-bottom: .7rem; display: flex; align-items: center; flex-wrap: wrap; gap: .4rem; }
+.walk-badge { display: inline-block; font-size: .72rem; font-weight: 800; padding: .12rem .6rem; border-radius: 99px; color: #fff; background: var(--lv-good); }
+.walk-badge.lv-ok { background: var(--lv-ok); color: #5a3d00; } .walk-badge.lv-bad { background: var(--lv-bad); color: #fff; }
+.walk-bars { display: flex; gap: 4px; align-items: flex-end; overflow-x: auto; padding-bottom: 2px; }
+.walk-cell { flex: 1 0 34px; min-width: 34px; display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: .68rem; color: var(--muted); }
+.walk-cell .bar { display: block; width: 100%; height: 34px; border-radius: 7px; }
+.walk-cell .bar.lv-good { background: var(--lv-good); } .walk-cell .bar.lv-ok { background: var(--lv-ok); } .walk-cell .bar.lv-bad { background: var(--lv-bad); }
+.walk-cell .t { font-weight: 700; color: var(--ink); } .walk-cell .h { font-size: .66rem; }
+.walk-legend { display: flex; flex-wrap: wrap; gap: .2rem .8rem; align-items: center; font-size: .72rem; color: var(--muted); margin: .5rem 0 .2rem; }
+.walk-legend i { display: inline-block; width: 11px; height: 11px; border-radius: 3px; margin-right: .3rem; vertical-align: -1px; }
+.walk-legend i.lv-good { background: var(--lv-good); } .walk-legend i.lv-ok { background: var(--lv-ok); } .walk-legend i.lv-bad { background: var(--lv-bad); }
+.walk-lines { list-style: none; margin: .5rem 0 0; padding: 0; display: grid; gap: .35rem; font-size: .92rem; }
+.walk-lines i { color: var(--brand-deep); margin-right: .25rem; }
+.walk-panel.compact { margin: 1rem 0; }
+.rain-course { margin-top: .9rem; padding: .8rem .95rem; border-radius: .9rem; background: var(--paper); border: 1px dashed #cbc5b6; font-size: .9rem; }
+.rain-course.on { background: #fbe9e7; border: 1px solid #f0c4be; }
+.rain-course .rc-title { font-weight: 700; margin-bottom: .3rem; display: flex; align-items: center; gap: .45rem; flex-wrap: wrap; }
+.rain-course ol { margin: 0; padding-left: 1.2rem; display: grid; gap: .2rem; }
+.rain-alt { margin: 1rem 0 0; padding: .7rem .95rem; border-radius: .9rem; background: #fbe9e7; border: 1px solid #f0c4be; color: #7d2a22; }
+.cond-tmr { font-size: .74rem; color: var(--muted); border-left: 1px solid var(--line); padding-left: .55rem; margin-left: .1rem; white-space: nowrap; }
+.cond-tmr b { font-weight: 800; }

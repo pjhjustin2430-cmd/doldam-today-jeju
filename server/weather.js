@@ -15,7 +15,7 @@ function baseDateTime() {
   return { base_date: day.toISOString().slice(0, 10).replaceAll('-', ''), base_time: String(h).padStart(2, '0') + '00' }
 }
 
-// day: 'today'(기본, 앞으로 8시간) | 'tomorrow'(내일 06~20시, 2시간 간격)
+// day: 'today'(기본, 앞으로 8시간) | 'hours'(오늘 지금부터 21시까지 1시간 간격 전부) | 'tomorrow'(내일 06~20시, 2시간 간격)
 export const getWeather = ({ place = '서귀포시', day = 'today' } = {}) => memo(`weather:${place}:${day}`, 10 * 60e3, () => fetchWeather(place, day))
 
 async function fetchWeather(place, day) {
@@ -34,8 +34,13 @@ async function fetchWeather(place, day) {
     const tomorrow = new Date(Date.now() + 33 * 3600e3).toISOString().slice(0, 10).replaceAll('-', '') // 한국 시각 기준 내일
     entries = entries.filter(([k]) => k.startsWith(tomorrow) && Number(k.slice(9, 11)) >= 6 && Number(k.slice(9, 11)) % 2 === 0)
   }
-  return entries.slice(0, 8).map(([time, v]) => ({
+  if (day === 'hours') {
+    const kst = new Date(Date.now() + 9 * 3600e3)
+    const today = kst.toISOString().slice(0, 10).replaceAll('-', '')
+    entries = entries.filter(([k]) => k.startsWith(today) && Number(k.slice(9, 11)) >= kst.getUTCHours() && Number(k.slice(9, 11)) <= 21)
+  }
+  return entries.slice(0, day === 'hours' ? 24 : 8).map(([time, v]) => ({
     place, time, temp: Number(v.TMP), sky: SKY[v.SKY] ?? v.SKY, rain: PTY[v.PTY] ?? v.PTY,
-    pop: Number(v.POP), wind: Number(v.WSD), dir: Number(v.VEC),
+    pop: Number(v.POP), wind: Number(v.WSD), dir: Number(v.VEC), hum: Number(v.REH),
   }))
 }

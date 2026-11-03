@@ -27,6 +27,10 @@
       "includeFiles": "server/**",
       "maxDuration": 30
     },
+    "api/sun.js": {
+      "includeFiles": "server/**",
+      "maxDuration": 30
+    },
     "api/weather.js": {
       "includeFiles": "server/**",
       "maxDuration": 30

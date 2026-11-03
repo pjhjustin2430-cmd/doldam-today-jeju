@@ -59,6 +59,9 @@ GitHub 연결 후 Import → Environment Variables 에 `.env.example` 의 값 �
 - QR 코드: `node scripts/makeQr.mjs [주소]` → `public/images/qr.png` (배포 주소로 가는 QR, 흰 바탕·검은 QR)
 - OG 이미지·홈 화면 아이콘: `node scripts/makeOg.mjs` → `public/images/og.png`(1200x630), `icon-180.png`. 사진은 한국관광공사(공공누리 제1유형)이며 이미지 안에 출처를 적었습니다.
 
+## 걷기 좋은 때 (홈·명소 상세)
+기상청 단기예보를 1시간 간격(`/api/weather?day=hours`, 오늘 지금~21시)과 내일(`day=tomorrow`)로 받아 시간대마다 걷기 수준(걷기 좋아요/주의/쉬어가요: 비 30%·바람 6m/s 이상이면 주의, 비 60%·바람 9m/s 이상이면 쉬어가요)을 색 막대로 보여 주고, 가장 길게 이어지는 좋은 시간을 알려 줍니다. 체감온도(기온·습도·바람으로 계산한 추정)와 옷차림 한 줄, Open-Meteo(키 불필요, `/api/sun`)의 일몰 시각·자외선 지수를 함께 보여 줍니다. 홈 날씨 칩에는 내일 걷기 수준이 붙고, 비가 오는 날에는 "비 오는 날 대안 코스"(제주돌문화공원 + 도청 오픈API의 진행 중 전시 + TourAPI 근처 식당)가 강조됩니다. 계산은 `src/lib/walkTime.js`, 화면은 `src/components/WalkPanel.jsx` 입니다.
+
 ## 내 돌담 수첩 (돌벽 채우기)
 도장을 찍으면 `내 수첩` 위쪽 돌벽(모양이 제각각인 돌 98개, 명소 하나 = 7개 묶음)의 빈 구멍이 돌로 채워집니다. 돌 배치는 `src/lib/stoneWall.js`(d3-delaunay 보로노이)가 늘 같은 모양으로 만들고, 기록은 Supabase `favorites` 에 저장됩니다. 단계(돌 줍는 여행자 → 돌담 장인)와 "이미지로 저장"(1200x630 PNG)이 있습니다.
 

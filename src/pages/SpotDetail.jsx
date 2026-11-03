@@ -7,6 +7,7 @@ import FindPlace from '../components/FindPlace'
 import InfoBadge from '../components/InfoBadge'
 import KindBadge from '../components/KindBadge'
 import SpotMap from '../components/SpotMap'
+import WalkPanel from '../components/WalkPanel'
 import { Empty, ErrorAlert, Loading } from '../components/Status'
 import { fetchNearby } from '../api/client'
 import { loadProfile } from '../lib/elevationProfile'
@@ -114,6 +115,14 @@ function Detail({ spot, kind, prev, next, onStamp }) {
       <div className="stat-bar">
         {stats.map(([k, v]) => <div key={k}><span>{k}</span><b>{v}</b></div>)}
       </div>
+
+      {fit?.variant === 'danger' && spot.kind !== 'park' && (
+        <div className="rain-alt">
+          <i className="bi bi-umbrella" /> 오늘은 <b>{fit.reasons.join(' · ')}</b>예요. 실내 전시가 있는 <Link to="/spots/stonepark"><b>제주돌문화공원</b></Link>을 대신 추천해요.
+        </div>
+      )}
+
+      <WalkPanel place={placeOf(spot)} compact />
 
       {!spot.hasTrack && galleryEl}
 

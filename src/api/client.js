@@ -24,7 +24,9 @@ const cached = (key, fn, ttl = 5 * 60 * 1000) => {
   cache.set(key, { at: Date.now(), p })
   return p
 }
-export const fetchWeather = (place = '서귀포시') => cached(`weather:${place}`, () => get(`/api/weather?place=${encodeURIComponent(place)}`))
+export const fetchWeather = (place = '서귀포시', day = 'today') =>
+  cached(`weather:${place}:${day}`, () => get(`/api/weather?place=${encodeURIComponent(place)}${day === 'today' ? '' : `&day=${day}`}`))
+export const fetchSun = () => cached('sun', () => get('/api/sun'), 30 * 60 * 1000)
 export const fetchAir = () => cached('air', () => get('/api/air'))
 export const askAgent = (message, history) => post('/api/agent', { message, history })
 export const fetchExhibitions = (status = '', limit = 10) => get(`/api/exhibitions?status=${status}&limit=${limit}`)

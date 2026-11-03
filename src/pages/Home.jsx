@@ -3,6 +3,7 @@ import { Badge, Button, Card, Col, Row } from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom'
 import IslandMap2D from '../components/IslandMap2D'
 import KindBadge from '../components/KindBadge'
+import WalkPanel from '../components/WalkPanel'
 import { ping } from '../api/client'
 import { isSupabaseReady, supabase } from '../lib/supabase'
 import { recommend } from '../lib/recommend'
@@ -64,6 +65,9 @@ export default function Home() {
       </section>
       <div className="wall-band" aria-hidden="true" />
 
+      <h3 className="section-title">걷기 좋은 때<small>기상청 예보 · Open-Meteo</small></h3>
+      <WalkPanel />
+
       <h3 className="section-title">오늘의 추천 돌담<small>날씨에 맞춰 골라요</small></h3>
       {today ? (
         <div className="panel today">
@@ -113,6 +117,7 @@ function Cond({ title, c }) {
       {c.loading ? <span>확인 중</span> : c.fit
         ? <><Badge bg={c.fit.variant}>{c.fit.label}</Badge><span className="small">바람 {c.fit.wind}m/s · 비 {c.fit.pop}%</span></>
         : <span className="small">예보 없음</span>}
+      {c.tomorrowFit && <span className="cond-tmr" title={`내일 바람 ${c.tomorrowFit.wind}m/s · 비 ${c.tomorrowFit.pop}%`}>내일 <b className={`text-${c.tomorrowFit.variant}`}>{c.tomorrowFit.label}</b></span>}
     </div>
   )
 }
