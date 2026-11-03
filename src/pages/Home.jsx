@@ -31,8 +31,8 @@ export default function Home() {
     }
     ping()
       .then((d) => setApi({
-        state: d.hasDataKey && d.claudeOk ? 'ok' : 'fail',
-        msg: `서버 OK · 공공데이터 키 ${d.hasDataKey ? '있음' : '없음'} · Claude 키 ${!d.hasClaudeKey ? '없음' : d.claudeOk ? '사용 가능' : '있지만 사용할 수 없음'}`,
+        state: d.hasDataKey && (d.claudeOk || d.geminiOk) ? 'ok' : 'fail',
+        msg: `서버 OK · 공공데이터 키 ${d.hasDataKey ? '있음' : '없음'} · AI 키 ${d.geminiOk ? 'Gemini 사용 가능' : d.claudeOk ? 'Claude 사용 가능' : d.hasGeminiKey || d.hasClaudeKey ? '있지만 사용할 수 없음' : '없음'}`,
       }))
       .catch(() => setApi({ state: 'fail', msg: '서버 함수에 연결되지 않아요' }))
   }, [loadSpots])

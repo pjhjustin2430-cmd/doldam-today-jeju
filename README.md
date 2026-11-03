@@ -59,6 +59,9 @@ GitHub 연결 후 Import → Environment Variables 에 `.env.example` 의 값 �
 - QR 코드: `node scripts/makeQr.mjs [주소]` → `public/images/qr.png` (배포 주소로 가는 QR, 흰 바탕·검은 QR)
 - OG 이미지·홈 화면 아이콘: `node scripts/makeOg.mjs` → `public/images/og.png`(1200x630), `icon-180.png`. 사진은 한국관광공사(공공누리 제1유형)이며 이미지 안에 출처를 적었습니다.
 
+## 돌담지기를 Gemini 로 돌리기 (Claude 키가 없을 때)
+`GEMINI_API_KEY`(Google AI Studio 무료 키)가 있으면 돌담지기가 Claude 대신 Gemini 로 답합니다(`server/gemini.js`). 도구 6개와 호출 내역 표시, 대화 저장은 그대로이고, 모델은 `GEMINI_MODEL`(기본 gemini-3.5-flash-lite)로 바꿉니다. `AGENT_PROVIDER=claude|gemini` 로 직접 고를 수도 있습니다. 가짜 Gemini 서버로 도구 호출 흐름(한 번에 3개, 다음 차례 4개)을 검증했고, 실제 Gemini 응답은 키를 넣은 뒤 확인합니다.
+
 ## 돌담지기 대화 기록
 돌담지기와 나눈 대화는 닉네임별로 Supabase `favorites` 테이블에 저장되고(`source = 'doldam-chat'`, `title` = 질문, `item_id` = 답변·호출 내역 JSON), 팝업을 열 때 최근 40개 질문을 불러옵니다. 닉네임이 없으면 이 브라우저만의 번호로 저장해 다른 사람과 섞이지 않고, 대화 지우기 버튼은 저장된 기록도 함께 지웁니다. 별도 테이블 없이 기존 테이블을 쓰는 실습용 구조이며, 실서비스라면 `chat_logs` 테이블과 로그인이 필요합니다.
 

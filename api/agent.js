@@ -4,6 +4,7 @@ import { getWeather } from '../server/weather.js'
 import { getAirQuality } from '../server/air.js'
 import { nearbyPlaces } from '../server/tour.js'
 import { stoneparkExhibitions } from '../server/stonepark.js'
+import { askGemini, friendlyGemini } from '../server/gemini.js'
 
 // 모델은 환경변수 ANTHROPIC_MODEL 로 바꾼다 (예: claude-haiku-5-5 = 빠르고 저렴, 없으면 claude-sonnet-5-5)
 const MODEL = process.env.ANTHROPIC_MODEL || 'claude-sonnet-5-5'
@@ -146,9 +147,16 @@ export default async function handler(req, res) {
   if (tooMany(req)) return res.status(429).json({ error: '질문이 너무 많아요. 10분 뒤에 다시 시도해 주세요.' })
   const asked = req.body?.message
   if (typeof asked !== 'string' || !asked.trim() || asked.length > 500) return res.status(400).json({ error: '질문은 1~500자로 입력해 주세요.' })
+  const { message, history = [] } = req.body ?? {}
+  // 어떤 AI 로 답할지: AGENT_PROVIDER(gemini|claude) 로 정하고, 없으면 GEMINI_API_KEY 가 있을 때 Gemini(무료), 아니면 Claude
+  const provider = process.env.AGENT_PROVIDER || (process.env.GEMINI_API_KEY ? 'gemini' : 'claude')
+  if (provider === 'gemini') {
+    if (!process.env.GEMINI_API_KEY) return res.status(500).json({ error: 'GEMINI_API_KEY 가 설정되지 않았어요' })
+    try { return res.status(200).json(await askGemini({ system: SYSTEM, tools, runTool, message, history })) }
+    catch (e) { return res.status(e.status && e.status < 600 ? e.status : 500).json({ error: friendlyGemini(e) }) }
+  }
   if (!process.env.ANTHROPIC_API_KEY) return res.status(500).json({ error: 'ANTHROPIC_API_KEY 가 설정되지 않았어요' })
   const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
-  const { message, history = [] } = req.body ?? {}
   const messages = [...history.slice(-10), { role: 'user', content: message }]
   const steps = []
 
