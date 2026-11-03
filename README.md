@@ -1,6 +1,6 @@
 # 돌담 오늘 · 제주 돌담과 바람
 
-배포 주소: https://doldam-today-2m16.vercel.app (GitHub: https://github.com/pjhjustin2430-cmd/doldam-today)
+배포 주소: https://doldam-today-jeju-project.vercel.app (GitHub: https://github.com/pjhjustin2430-cmd/doldam-today-jeju)
 
 바람 많은 섬이 쌓은 제주 돌담(밭담·환해장성·진성·마을 돌담·방사탑·돌염전)을 날씨(바람·비·미세먼지)에 맞춰 골라 주고, 3D 돌담 모형으로 돌담이 바람을 늦추는 원리를 보여주는 웹앱. 돌담지기(AI 에이전트)는 모든 화면 오른쪽 대화창에서 쓸 수 있습니다.
 공공데이터 5종(제주 무장애여행정보 CSV · 제주도청 돌문화공원 전시 API · 기상청 단기예보 · 에어코리아 · 관광공사 TourAPI) + AI 에이전트(돌담지기, 도구 6개) + Supabase 돌담 수첩.

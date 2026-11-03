@@ -36,7 +36,7 @@ export default function My() {
     g.fillStyle = '#ffffff'; g.font = `800 56px ${F}`; g.fillText(`${me}의 돌담`, 48, 508)
     g.fillStyle = '#ff9a8c'; g.font = `700 30px ${F}`; g.fillText(`${n} / ${spots.length}곳 · ${levelOf(n)}`, 50, 560)
     g.fillStyle = '#9fb3c8'; g.font = `400 24px ${F}`; g.textAlign = 'right'
-    g.fillText('돌담 오늘 · doldam-today-2m16.vercel.app', 1152, 580)
+    g.fillText('돌담 오늘 · doldam-today-jeju-project.vercel.app', 1152, 580)
     c.toBlob((b) => {
       const a = document.createElement('a')
       a.href = URL.createObjectURL(b); a.download = '내-돌담.png'; a.click()
