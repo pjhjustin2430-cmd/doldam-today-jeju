@@ -501,3 +501,10 @@ footer.olle-footer::before { content: ''; position: absolute; left: 0; right: 0;
 /* 돌담지기: 저장된 대화 안내 */
 .dock-saved { font-size: .74rem; color: var(--muted); text-align: center; margin: 0 0 .6rem; }
 .dock-saved i { margin-right: .25rem; }
+
+/* 내 수첩: 안 가 본 곳에서 바로 도장 */
+.todo-wrap { display: flex; flex-direction: column; gap: .4rem; height: 100%; }
+.todo-wrap .todo-card { flex: 1; }
+.todo-stamp { border: 1px solid #bfcfa9; background: #fff; color: var(--brand-deep); border-radius: .7rem; padding: .35rem .5rem; font-size: .84rem; font-weight: 700; transition: background .15s, border-color .15s; }
+.todo-stamp:hover { background: var(--brand-soft); border-color: var(--brand); }
+.todo-stamp i { margin-right: .25rem; }

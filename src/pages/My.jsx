@@ -15,7 +15,7 @@ const levelOf = (n) => [...LEVELS].reverse().find(([min]) => n >= min)[1]
 // 내 돌담 수첩: 도장을 찍은 곳은 돌벽의 빈 구멍이 돌로 채워지고, 아래에 도장 카드가 쌓인다
 export default function My() {
   usePageTitle('내 돌담 수첩')
-  const { nickname, setNickname, favorites, favLoading, loadFavorites, removeFavorite, spots, kinds, loadSpots } = useAppStore()
+  const { nickname, setNickname, favorites, favLoading, loadFavorites, removeFavorite, stamp, spots, kinds, loadSpots } = useAppStore()
   useEffect(() => { loadFavorites() }, [nickname, loadFavorites])
   useEffect(() => { loadSpots() }, [loadSpots])
   const visited = useMemo(() => new Set(favorites.map((f) => f.item_id)), [favorites])
@@ -91,19 +91,24 @@ export default function My() {
 
       {todo.length > 0 && (
         <>
-          <h3 className="section-title">아직 안 가 본 곳<small>{todo.length}곳 · 누르면 상세로 가요</small></h3>
+          <h3 className="section-title">아직 안 가 본 곳<small>{todo.length}곳 · 사진을 누르면 상세, "도장 찍기"를 누르면 바로 돌벽이 채워져요</small></h3>
           <Row xs={2} md={3} lg={4} className="g-3">
             {todo.map((s) => {
               const k = kinds.find((x) => x.id === s.kind)
               return (
                 <Col key={s.id}>
-                  <Link to={`/spots/${s.id}`} className="todo-card" style={{ '--kc': k?.color }}>
-                    {s.photos?.[0]
-                      ? <span className="todo-photo" role="img" aria-label={s.photos[0].caption} style={{ backgroundImage: `url(${s.photos[0].src})` }} />
-                      : <i className={`bi bi-${k?.icon ?? 'bricks'}`} />}
-                    <b>{s.name}</b>
-                    <span>{k?.name}</span>
-                  </Link>
+                  <div className="todo-wrap">
+                    <Link to={`/spots/${s.id}`} className="todo-card" style={{ '--kc': k?.color }}>
+                      {s.photos?.[0]
+                        ? <span className="todo-photo" role="img" aria-label={s.photos[0].caption} style={{ backgroundImage: `url(${s.photos[0].src})` }} />
+                        : <i className={`bi bi-${k?.icon ?? 'bricks'}`} />}
+                      <b>{s.name}</b>
+                      <span>{k?.name}</span>
+                    </Link>
+                    <button type="button" className="todo-stamp" onClick={() => stamp(s)} aria-label={`${s.name} 도장 찍기`}>
+                      <i className="bi bi-patch-check" /> 도장 찍기
+                    </button>
+                  </div>
                 </Col>
               )
             })}
