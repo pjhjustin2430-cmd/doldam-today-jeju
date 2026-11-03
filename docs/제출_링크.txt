@@ -1,0 +1,14 @@
+박지환 — 돌담 오늘 (제주 돌담 안내)
+
+GitHub 저장소 : https://github.com/pjhjustin2430-cmd/doldam-today-jeju
+배포 주소     : https://doldam-today-jeju-project.vercel.app
+
+한 줄 소개    : 제주 돌담 14곳을 다녀올 때마다 내 수첩의 돌벽이 채워지는 웹앱 ("걷는 만큼 쌓이는 나만의 제주 돌담")
+주요 기능     : 종류별 색 돌담 지도 · 걷기 좋은 때(시간대별, 체감온도·옷차림, 일몰·자외선) · 명소·도감 · 실제 지도(실측 경로·위성) ·
+               무장애 안내 · 주변 숙박·축제·전시 · 내 돌담 수첩(돌벽 채우기, 안 가 본 곳에서 바로 도장) · 바람과 돌담 3D · AI 돌담지기
+사용 기술     : React(Vite)·Router·Zustand, Supabase, Vercel 서버 함수, Three.js, Leaflet, Claude(AI 에이전트)
+공공데이터    : 기상청 단기예보, 에어코리아, 한국관광공사 TourAPI, 제주도청 오픈API, 제주 무장애여행정보 (+ Open-Meteo)
+
+제출 파일     : 2_발표자료_돌담오늘.pptx / .pdf (17장) · 3_시연영상_초안(자동생성).mp4 (약 4분) · 4_발표_대본.md · 5_시연영상_녹화_대본.md
+
+참고          : Claude(돌담지기) 키는 아직 유효하지 않아 돌담지기 답변 화면은 구조만 설명합니다.
