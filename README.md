@@ -73,4 +73,4 @@ GitHub 연결 후 Import → Environment Variables 에 `.env.example` 의 값 �
 
 배포본 서버 함수 확인(2026-11-03): `/api/weather`, `/api/air`(에어코리아 실측), `/api/spots`, `/api/exhibitions`(돌문화공원), `/api/nearby`(TourAPI) 모두 200 응답. 돌담지기(`/api/agent`)는 Claude 키 교체 후 캡처를 추가합니다.
 
-발표 자료: `docs/돌담오늘_발표자료.pptx`(본 발표 3분 6장 + 질문 대비 부록 8장) · 대본 `docs/발표_대본.md` · 시연 영상 대본 `docs/시연_영상_대본.md`
+발표 자료: `docs/돌담오늘_발표자료.pptx`(17장, 모든 기능 소개) · 대본 `docs/발표_대본.md` · 시연 영상 대본 `docs/시연_영상_대본.md`
