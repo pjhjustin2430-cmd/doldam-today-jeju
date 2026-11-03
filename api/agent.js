@@ -44,12 +44,12 @@ const tools = [
   },
   {
     name: 'find_nearby_places',
-    description: '관광공사 TourAPI로 명소 주변의 관광지·문화시설·음식점·숙박을 조회한다',
+    description: '관광공사 TourAPI로 명소 주변의 관광지·문화시설·음식점·숙박(반경 10km)·축제·행사(제주 전체, 가까운 순)를 조회한다',
     input_schema: {
       type: 'object',
       properties: {
         spotId: { type: 'string', description: 'search_doldam_spots 결과의 id' },
-        contentTypeId: { type: 'string', description: '12 관광지, 14 문화시설, 32 숙박, 39 음식점. 비우면 전체' },
+        contentTypeId: { type: 'string', description: '12 관광지, 14 문화시설, 15 축제·행사, 32 숙박, 39 음식점. 비우면 전체' },
       },
       required: ['spotId'],
     },
@@ -101,7 +101,7 @@ async function spotDetail({ spotId } = {}) {
 async function findNearby({ spotId, contentTypeId = '' } = {}) {
   const s = findSpot(spotId)
   if (!s) throw new Error('없는 명소 id예요')
-  return nearbyPlaces({ lat: s.lat, lng: s.lng, contentTypeId })
+  return nearbyPlaces({ lat: s.lat, lng: s.lng, contentTypeId, radius: contentTypeId === '32' ? 10000 : 3000 })
 }
 
 const runTool = { search_doldam_spots: searchSpots, get_spot_detail: spotDetail, get_weather: getWeather, find_nearby_places: findNearby, get_air_quality: getAirQuality,

@@ -31,7 +31,11 @@ export default function AgentDock() {
   const loading = useAppStore((s) => s.chatLoading)
   const sendMessage = useAppStore((s) => s.sendMessage)
   const clearChat = useAppStore((s) => s.clearChat)
+  const loadChat = useAppStore((s) => s.loadChat)
+  const restored = useAppStore((s) => s.restored)
+  const nickname = useAppStore((s) => s.nickname)
   const [input, setInput] = useState('')
+  useEffect(() => { if (open) loadChat() }, [open, nickname, loadChat]) // 열 때(닉네임이 바뀔 때도) 저장된 대화를 불러온다
   const end = useRef(null)
   const field = useRef(null)
   useEffect(() => { end.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' }) }, [messages, loading, open])
@@ -59,7 +63,7 @@ export default function AgentDock() {
           <b>돌담지기</b>
           <small>AI가 공공 API를 골라 불러 답해요</small>
         </div>
-        {messages.length > 0 && <button type="button" className="dock-icon" onClick={clearChat} title="대화 지우기" aria-label="대화 지우기"><i className="bi bi-arrow-counterclockwise" /></button>}
+        {messages.length > 0 && <button type="button" className="dock-icon" onClick={clearChat} title="대화 지우기 (저장된 기록도 함께 지워요)" aria-label="대화 지우기"><i className="bi bi-arrow-counterclockwise" /></button>}
         <button type="button" className="dock-icon" onClick={() => setOpen(false)} title="닫기" aria-label="대화창 닫기"><i className="bi bi-x-lg" /></button>
       </header>
 
@@ -78,6 +82,7 @@ export default function AgentDock() {
             </details>
           </>
         )}
+        {restored > 0 && <div className="dock-saved"><i className="bi bi-clock-history" /> 이전 대화 {restored}개를 불러왔어요 · 대화는 Supabase에 저장돼요</div>}
         {messages.map((m, i) => (
           <div key={i} className={`msg ${m.role} ${m.error ? 'error' : ''}`}>
             {m.steps?.length > 0 && (

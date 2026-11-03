@@ -5,14 +5,23 @@ import { askAgent, fetchSpots } from '../api/client'
 
 const NEED_DB = 'Supabase 설정(.env.local)이 필요해요'
 const SOURCE = 'doldam' // favorites 테이블에서 돌담 수첩 기록을 구분하는 값
+const CHAT = 'doldam-chat' // 같은 테이블에서 돌담지기 대화 기록을 구분하는 값 (title = 질문, item_id = {답변, 호출 내역} JSON)
+const CHAT_KEEP = 40 // 불러올 최근 질문 수
 
 // 여러 페이지가 함께 쓰는 상태: 닉네임, 알림, 돌담 명소·종류, 선택 명소, 돌담 수첩(Supabase), 에이전트 대화
 export const useAppStore = create(
   persist(
     (set, get) => ({
       nickname: '',
-      setNickname: (nickname) => set({ nickname: nickname.trim() }),
+      setNickname: (nickname) => {
+        const next = nickname.trim()
+        if (next !== get().nickname) set({ nickname: next, messages: [], chatFor: null, restored: 0 }) // 닉네임이 바뀌면 그 사람의 대화를 다시 불러온다
+        else set({ nickname: next })
+      },
       me: () => get().nickname || '익명',
+      // 닉네임이 없을 때도 다른 사람과 대화 기록이 섞이지 않도록, 이 브라우저만의 번호를 붙인다
+      deviceId: Math.random().toString(36).slice(2, 8),
+      chatKey: () => get().nickname || `익명-${get().deviceId}`,
 
       toasts: [],
       toast: (message, variant = 'success') => {
@@ -69,6 +78,24 @@ export const useAppStore = create(
 
       messages: [],
       chatLoading: false,
+      chatFor: null, // 어느 대화 키의 기록을 불러왔는지
+      restored: 0, // 저장돼 있다가 불러온 질문 수
+      // 돌담지기 대화 기록: Supabase favorites(source = 'doldam-chat')에서 이 사람의 최근 대화를 불러온다
+      loadChat: async () => {
+        if (!supabase) return
+        const key = get().chatKey()
+        if (get().chatFor === key) return
+        set({ chatFor: key })
+        const { data, error } = await supabase.from('favorites').select('title,item_id,created_at')
+          .eq('nickname', key).eq('source', CHAT).order('created_at', { ascending: false }).limit(CHAT_KEEP)
+        if (error || !data?.length) return
+        const restored = data.reverse().flatMap((r) => {
+          let saved = {}
+          try { saved = JSON.parse(r.item_id) } catch { /* 형식이 다르면 질문만 보여 준다 */ }
+          return [{ role: 'user', text: r.title }, { role: 'assistant', text: saved.a ?? '(저장된 답변을 읽지 못했어요)', steps: saved.steps ?? [] }]
+        })
+        set({ messages: [...restored, ...get().messages], restored: data.length })
+      },
       sendMessage: async (text) => {
         // 오류 말풍선은 대화 맥락에 넣지 않는다
         let shown = get().messages.filter((m) => !m.error)
@@ -79,6 +106,10 @@ export const useAppStore = create(
         try {
           const { answer, steps } = await askAgent(text, history)
           set({ messages: [...get().messages, { role: 'assistant', text: answer, steps }] })
+          if (supabase) { // 저장 실패가 대화를 막지 않도록 조용히 처리
+            supabase.from('favorites').insert({ nickname: get().chatKey(), source: CHAT, title: text, item_id: JSON.stringify({ a: answer, steps: steps ?? [] }) })
+              .then(({ error }) => { if (error) console.warn('대화 기록 저장 실패:', error.message) })
+          }
         } catch (e) {
           // 실패해도 대화에 남겨 두고 "다시 시도" 버튼을 보여준다
           set({ messages: [...get().messages, { role: 'assistant', error: true, text: e.message, retry: text }] })
@@ -86,8 +117,14 @@ export const useAppStore = create(
           set({ chatLoading: false })
         }
       },
-      clearChat: () => set({ messages: [] }),
+      // 대화를 지우면 Supabase 에 저장된 이 사람의 대화 기록도 함께 지운다
+      clearChat: async () => {
+        set({ messages: [], restored: 0 })
+        if (!supabase) return
+        const { error } = await supabase.from('favorites').delete().eq('nickname', get().chatKey()).eq('source', CHAT)
+        if (error) get().toast('저장된 대화를 지우지 못했어요', 'warning')
+      },
     }),
-    { name: 'doldam-store', partialize: (s) => ({ nickname: s.nickname }) },
+    { name: 'doldam-store', partialize: (s) => ({ nickname: s.nickname, deviceId: s.deviceId }) },
   ),
 )

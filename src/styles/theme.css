@@ -497,3 +497,7 @@ footer.olle-footer::before { content: ''; position: absolute; left: 0; right: 0;
 .rain-alt { margin: 1rem 0 0; padding: .7rem .95rem; border-radius: .9rem; background: #fbe9e7; border: 1px solid #f0c4be; color: #7d2a22; }
 .cond-tmr { font-size: .74rem; color: var(--muted); border-left: 1px solid var(--line); padding-left: .55rem; margin-left: .1rem; white-space: nowrap; }
 .cond-tmr b { font-weight: 800; }
+
+/* 돌담지기: 저장된 대화 안내 */
+.dock-saved { font-size: .74rem; color: var(--muted); text-align: center; margin: 0 0 .6rem; }
+.dock-saved i { margin-right: .25rem; }
